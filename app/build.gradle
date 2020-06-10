@@ -52,6 +52,7 @@ dependencies {
 
     //room
     implementation "androidx.room:room-runtime:$room"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor "androidx.room:room-compiler:$room"
     implementation "androidx.room:room-rxjava2:$room"
 

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NewsFeed</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="navigation_headline_title">Headlines</string>
+    <string name="navigation_category_title">Categories</string>
+    <string name="navigation_favorite_title">Favorites</string>
 </resources>

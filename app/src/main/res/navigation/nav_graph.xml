@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_headline">
 
+    <fragment
+        android:id="@+id/navigation_headline"
+        android:name="com.kulloveth.newsfeed.ui.headlines.HeadlineActivity"
+        android:label="activity_headline"
+        tools:layout="@layout/activity_headline" />
+    <fragment
+        android:id="@+id/navigation_categories"
+        android:name="com.kulloveth.newsfeed.ui.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" />
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.kulloveth.newsfeed.ui.favorite.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>
