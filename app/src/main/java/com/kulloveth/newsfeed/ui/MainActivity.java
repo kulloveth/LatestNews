@@ -1,8 +1,10 @@
-package com.kulloveth.newsfeed;
+package com.kulloveth.newsfeed.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.kulloveth.newsfeed.R;
 
 public class MainActivity extends AppCompatActivity {
 
