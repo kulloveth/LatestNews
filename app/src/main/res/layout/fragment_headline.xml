@@ -6,11 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".ui.headlines.HeadlineFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="174dp"
-        tools:layout_editor_absoluteY="318dp" />
+    <include layout="@layout/appbar_layout"
+        android:id="@+id/app_bar"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,4 +5,7 @@
     <string name="navigation_headline_title">Headlines</string>
     <string name="navigation_category_title">Categories</string>
     <string name="navigation_favorite_title">Favorites</string>
+    <string name="category_fragment_title">Categories</string>
+    <string name="favorite_fragment_title">Favorites</string>
+    <string name="headline_fragment_category">Headlines</string>
 </resources>
