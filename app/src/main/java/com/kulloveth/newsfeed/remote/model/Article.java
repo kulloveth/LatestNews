@@ -9,6 +9,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Objects;
 
 public class Article implements Parcelable {
+    private int id;
+
     @SerializedName("source")
     @Expose
     private Source source;
@@ -34,7 +36,8 @@ public class Article implements Parcelable {
     @Expose
     private String content;
 
-    public Article(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+    public Article(int id, Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+        this.id = id;
         this.source = source;
         this.author = author;
         this.title = title;
@@ -70,6 +73,10 @@ public class Article implements Parcelable {
             return new Article[size];
         }
     };
+
+    public int getId() {
+        return id;
+    }
 
     public Source getSource() {
         return source;
