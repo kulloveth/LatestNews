@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_headline" />
     <fragment
         android:id="@+id/navigation_categories"
-        android:name="com.kulloveth.newsfeed.ui.category.CategoryFragment"
+        android:name="com.kulloveth.newsfeed.ui.category.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
     <fragment

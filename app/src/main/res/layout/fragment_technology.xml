@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.category.TechnologyFragment">
+    tools:context=".ui.category.technology.TechnologyFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/technology_rv"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:listitem="@layout/headline_list_item"
+        android:layout_width="match_parent"/>
 
 </FrameLayout>

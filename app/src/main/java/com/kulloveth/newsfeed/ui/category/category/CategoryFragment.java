@@ -1,27 +1,23 @@
-package com.kulloveth.newsfeed.ui.category;
+package com.kulloveth.newsfeed.ui.category.category;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.kulloveth.newsfeed.AppUtils;
-import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentCategoryBinding;
+import com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter;
 
-import static com.kulloveth.newsfeed.ui.category.CategoryPagerAdapter.ENTERTAINMENT_PAGE_INDEX;
-import static com.kulloveth.newsfeed.ui.category.CategoryPagerAdapter.HEALTH_PAGE_INDEX;
-import static com.kulloveth.newsfeed.ui.category.CategoryPagerAdapter.SPORTS_PAGE_INDEX;
-import static com.kulloveth.newsfeed.ui.category.CategoryPagerAdapter.TECHNOLOGY_PAGE_INDEX;
+import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.ENTERTAINMENT_PAGE_INDEX;
+import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.HEALTH_PAGE_INDEX;
+import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.SPORTS_PAGE_INDEX;
+import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.TECHNOLOGY_PAGE_INDEX;
 
 /**
  * A simple {@link Fragment} subclass.
