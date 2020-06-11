@@ -6,10 +6,8 @@
     tools:context=".ui.category.technology.TechnologyFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/technology_rv"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/headline_list_item"
-        android:layout_width="match_parent"/>
+    <include
+        android:id="@+id/sub_category_rv"
+        layout="@layout/category_recyclerview" />
 
 </FrameLayout>

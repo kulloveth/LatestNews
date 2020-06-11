@@ -46,7 +46,7 @@ public class EntertainmentFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = binding.entertainmentRv;
+        recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         adapter = new EntertainmentAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));

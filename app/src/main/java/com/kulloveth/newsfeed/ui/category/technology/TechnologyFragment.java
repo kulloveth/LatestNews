@@ -48,7 +48,7 @@ public class TechnologyFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         adapter = new TechnologyAdapter();
-        recyclerView = binding.technologyRv;
+        recyclerView = binding.subCategoryRv.subCategoryRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         setUpTechnologyArticle();

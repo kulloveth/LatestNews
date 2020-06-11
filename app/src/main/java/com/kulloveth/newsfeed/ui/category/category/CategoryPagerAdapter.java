@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.kulloveth.newsfeed.ui.category.entertainment.EntertainmentFragment;
-import com.kulloveth.newsfeed.ui.category.fragments.health.HealthFragment;
+import com.kulloveth.newsfeed.ui.category.health.HealthFragment;
 import com.kulloveth.newsfeed.ui.category.sports.SportsFragment;
 import com.kulloveth.newsfeed.ui.category.technology.TechnologyFragment;
 

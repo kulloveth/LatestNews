@@ -50,7 +50,7 @@ public class SportsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = binding.sportsRv;
+        recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         adapter = new SportsAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));

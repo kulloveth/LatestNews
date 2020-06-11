@@ -5,10 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.category.fragments.health.HealthFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/health_rv"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/headline_list_item"
-        android:layout_width="match_parent"/>
+    <include layout="@layout/category_recyclerview"
+        android:id="@+id/sub_category_rv"/>
 
 </FrameLayout>

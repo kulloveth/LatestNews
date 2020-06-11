@@ -1,4 +1,4 @@
-package com.kulloveth.newsfeed.ui.category.fragments.health;
+package com.kulloveth.newsfeed.ui.category.health;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +24,7 @@ public class HealthFragment extends Fragment {
 
     private static final String TAG = HealthFragment.class.getSimpleName();
     CategoryViewModel viewModel;
-    HealthAdapter adapter;
+    com.kulloveth.newsfeed.ui.category.fragments.health.HealthAdapter adapter;
     RecyclerView recyclerView;
     FragmentHealthBinding binding;
 
@@ -46,9 +46,9 @@ public class HealthFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = binding.healthRv;
+        recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        adapter = new HealthAdapter();
+        adapter = new com.kulloveth.newsfeed.ui.category.fragments.health.HealthAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         setUpHealthArticle();
