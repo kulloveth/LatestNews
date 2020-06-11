@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,10 +28,12 @@ public class HeadlineViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Article>> articlesLiveData;
     private ApiServiceInterface apiServiceInterface;
+    CompositeDisposable disposable;
 
     public HeadlineViewModel() {
         articlesLiveData = new MutableLiveData<>();
         apiServiceInterface = ApiUtil.getNewsApiServiceInterface();
+        disposable = new CompositeDisposable();
     }
 
     //fetch topheadline by countries
@@ -54,16 +57,18 @@ public class HeadlineViewModel extends ViewModel {
         return articlesLiveData;
     }
 
-    // Flowable<ArrayList<Memo>> searchNote(String query);
-
     Observable searchNote(String query, String apikey) {
         Observable observable = apiServiceInterface.searchTopHeadLines(query, apikey).delay(2, TimeUnit.SECONDS)
                 .map((Function<NewsResponse, Object>) articles ->
                         articles.getArticles()).toObservable();
-        //  getmCompositeDisposable().add(observable.subscribe());
+        disposable.add(observable.subscribe());
         return observable;
 
 
     }
 
+    @Override
+    protected void onCleared() {
+        disposable.dispose();
+    }
 }

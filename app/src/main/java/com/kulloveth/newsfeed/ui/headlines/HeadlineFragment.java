@@ -1,5 +1,6 @@
 package com.kulloveth.newsfeed.ui.headlines;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -44,8 +46,9 @@ public class HeadlineFragment extends Fragment {
     HeadlineViewModel viewModel;
     FragmentHeadlineBinding binding;
     RecyclerView recyclerView;
-    HeadlineAdapter adapter;
-    SearchView searchView;
+    private HeadlineAdapter adapter;
+    private SearchView searchView;
+    private Toolbar toolbar;
 
     ArrayList<Article> articleArrayList = new ArrayList<>();
 
@@ -69,7 +72,7 @@ public class HeadlineFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Toolbar toolbar = binding.appBar.toolbar;
+        toolbar = binding.appBar.toolbar;
         adapter = new HeadlineAdapter();
         recyclerView = binding.headlineRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -106,12 +109,18 @@ public class HeadlineFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.update) {
-            WidgetService.actionUpdateWidget(requireActivity(), articleArrayList);
-            Snackbar.make(requireView(), "Widget Updated", Snackbar.LENGTH_LONG).show();
-            return true;
+        switch (itemId) {
+            case R.id.update:
+                WidgetService.actionUpdateWidget(requireActivity(), articleArrayList);
+                Snackbar.make(requireView(), "Widget Updated", Snackbar.LENGTH_LONG).show();
+                return true;
+
+            case R.id.filter:
+                showAlertDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+
     }
 
 
@@ -137,5 +146,42 @@ public class HeadlineFragment extends Fragment {
                 .subscribe(articles -> adapter.submitList(articles), throwable -> {
                     Log.e(TAG, "setUpSearchObservable: error searching" + throwable.getMessage());
                 });
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireActivity());
+        alertDialog.setTitle("AlertDialog");
+        String[] items = {"Germany", "United States", "Japan", "Nigeria", "California"};
+        int checkedItem = 1;
+        alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        viewModel.getTopHeadlineByCountry("de", ApiUtil.API_KEY);
+                        AppUtils.setToolbarTitle("Germany", ((AppCompatActivity) requireActivity()));
+                        break;
+                    case 1:
+                        viewModel.getTopHeadlineByCountry("us", ApiUtil.API_KEY);
+                        AppUtils.setToolbarTitle("United States", ((AppCompatActivity) requireActivity()));
+                        break;
+                    case 2:
+                        viewModel.getTopHeadlineByCountry("jp", ApiUtil.API_KEY);
+                        AppUtils.setToolbarTitle("Japan", ((AppCompatActivity) requireActivity()));
+                        break;
+                    case 3:
+                        viewModel.getTopHeadlineByCountry("ng", ApiUtil.API_KEY);
+                        AppUtils.setToolbarTitle("Nigeria", ((AppCompatActivity) requireActivity()));
+                        break;
+                    case 4:
+                        viewModel.getTopHeadlineByCountry("ca", ApiUtil.API_KEY);
+                        AppUtils.setToolbarTitle("California", ((AppCompatActivity) requireActivity()));
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(true);
+        alert.show();
     }
 }

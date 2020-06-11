@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.HeadlineListItemBinding;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.squareup.picasso.Picasso;
@@ -17,15 +18,11 @@ import com.squareup.picasso.Picasso;
 public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLineViewHolder> {
 
     HeadlineListItemBinding binding;
-    ItemCLickedListener cLickedListener;
 
     public HeadlineAdapter() {
         super(diffUtilCallback);
     }
 
-    public void setcLickedListener(ItemCLickedListener cLickedListener) {
-        this.cLickedListener = cLickedListener;
-    }
 
     @NonNull
     @Override
@@ -56,9 +53,7 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
             titleTv.setText(article.getTitle());
             descriptionTv.setText(article.getDescription());
             String path = article.getUrlToImage();
-            if (!path.isEmpty()) {
-                Picasso.get().load(path).into(headlineImage);
-            }
+            Picasso.get().load(path).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(headlineImage);
         }
     }
 

@@ -3,7 +3,6 @@ package com.kulloveth.newsfeed.remote.api;
 import com.kulloveth.newsfeed.remote.model.NewsResponse;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
