@@ -11,6 +11,7 @@ import com.kulloveth.newsfeed.remote.api.ApiServiceInterface;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.remote.model.NewsResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,7 +22,7 @@ public class HeadlineViewModel extends ViewModel {
 
     private static final String TAG = HeadlineViewModel.class.getSimpleName();
 
-    private MutableLiveData<List<Article>> articlesLiveData;
+    private MutableLiveData<ArrayList<Article>> articlesLiveData;
     private ApiServiceInterface apiServiceInterface;
 
     public HeadlineViewModel() {
@@ -30,12 +31,12 @@ public class HeadlineViewModel extends ViewModel {
     }
 
     //fetch topheadline by countries
-    LiveData<List<Article>> getTopHeadlineByCountry(String country, String apiKey) {
+    LiveData<ArrayList<Article>> getTopHeadlineByCountry(String country, String apiKey) {
         apiServiceInterface.getTopHeadLinesByCountry(country, apiKey).enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 if (response.isSuccessful()) {
-                    List<Article> articles = response.body().getArticles();
+                    ArrayList<Article> articles = response.body().getArticles();
                     articlesLiveData.setValue(articles);
                 } else {
                     Log.e(TAG, "onResponse: Error fetching data" + response.errorBody());

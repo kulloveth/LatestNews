@@ -11,4 +11,6 @@
     <string name="news_image">News Image</string>
     <string name="like_button">Like</string>
     <string name="share">Share</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>

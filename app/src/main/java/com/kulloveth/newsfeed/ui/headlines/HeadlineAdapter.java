@@ -17,9 +17,14 @@ import com.squareup.picasso.Picasso;
 public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLineViewHolder> {
 
     HeadlineListItemBinding binding;
+    ItemCLickedListener cLickedListener;
 
     public HeadlineAdapter() {
         super(diffUtilCallback);
+    }
+
+    public void setcLickedListener(ItemCLickedListener cLickedListener) {
+        this.cLickedListener = cLickedListener;
     }
 
     @NonNull
@@ -33,6 +38,9 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
     public void onBindViewHolder(@NonNull HeadLineViewHolder holder, int position) {
         Article article = getItem(position);
         holder.bind(article);
+        holder.itemView.setOnClickListener(v -> {
+            cLickedListener.itemClicked(article);
+        });
     }
 
     class HeadLineViewHolder extends RecyclerView.ViewHolder {
@@ -65,4 +73,8 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
             return oldItem.equals(newItem);
         }
     };
+
+    public interface ItemCLickedListener {
+        void itemClicked(Article article);
+    }
 }

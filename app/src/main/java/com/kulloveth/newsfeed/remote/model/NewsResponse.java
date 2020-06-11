@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,12 +20,12 @@ public class NewsResponse implements Parcelable {
     private int totalResults;
     @SerializedName("articles")
     @Expose
-    private List<Article> articles = null;
+    private ArrayList<Article> articles = null;
 
     public NewsResponse() {
     }
 
-    public NewsResponse(String status, int totalResults, List<Article> articles) {
+    public NewsResponse(String status, int totalResults, ArrayList<Article> articles) {
         this.status = status;
         this.totalResults = totalResults;
         this.articles = articles;
@@ -56,7 +57,7 @@ public class NewsResponse implements Parcelable {
         return totalResults;
     }
 
-    public List<Article> getArticles() {
+    public ArrayList<Article> getArticles() {
         return articles;
     }
 

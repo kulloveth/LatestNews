@@ -3,9 +3,13 @@ package com.kulloveth.newsfeed.ui.headlines;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,11 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHeadlineBinding;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
+import com.kulloveth.newsfeed.ui.widget.WidgetService;
+
+import java.util.ArrayList;
 
 public class HeadlineFragment extends Fragment {
 
@@ -28,6 +36,8 @@ public class HeadlineFragment extends Fragment {
     FragmentHeadlineBinding binding;
     RecyclerView recyclerView;
     HeadlineAdapter adapter;
+
+    ArrayList<Article> articleArrayList = new ArrayList<>();
 
     public HeadlineFragment() {
     }
@@ -57,18 +67,36 @@ public class HeadlineFragment extends Fragment {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         AppUtils.setToolbarTitle(getString(R.string.headline_fragment_category), ((AppCompatActivity) requireActivity()));
         viewModel = new ViewModelProvider(this).get(HeadlineViewModel.class);
-
         setUpHeadLineArticle();
 
     }
 
 
-    private void setUpHeadLineArticle(){
+    private void setUpHeadLineArticle() {
         viewModel.getTopHeadlineByCountry("us", ApiUtil.API_KEY).observe(requireActivity(), articles -> {
-            for (Article article: articles) {
+            for (Article article : articles) {
                 Log.d(TAG, "onActivityCreated: headlines by country " + article.getTitle());
             }
+            articleArrayList = articles;
             adapter.submitList(articles);
         });
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.headline_detail_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.update) {
+            WidgetService.actionUpdateWidget(requireActivity(), articleArrayList);
+            Snackbar.make(requireView(), "Widget Updated", Snackbar.LENGTH_LONG).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
