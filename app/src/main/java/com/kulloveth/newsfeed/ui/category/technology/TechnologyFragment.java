@@ -47,7 +47,7 @@ public class TechnologyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        adapter = new TechnologyAdapter();
+        adapter = new TechnologyAdapter(requireActivity());
         recyclerView = binding.subCategoryRv.subCategoryRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);

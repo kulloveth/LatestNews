@@ -73,7 +73,7 @@ public class HeadlineFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         toolbar = binding.appBar.toolbar;
-        adapter = new HeadlineAdapter();
+        adapter = new HeadlineAdapter(requireActivity());
         recyclerView = binding.headlineRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);

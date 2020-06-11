@@ -52,7 +52,7 @@ public class SportsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        adapter = new SportsAdapter();
+        adapter = new SportsAdapter(requireActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         setUpSportsArticle();

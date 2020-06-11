@@ -1,6 +1,8 @@
 package com.kulloveth.newsfeed.ui.category.sports;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.HeadlineListItemBinding;
 import com.kulloveth.newsfeed.remote.model.Article;
@@ -18,9 +21,11 @@ import com.squareup.picasso.Picasso;
 public class SportsAdapter extends ListAdapter<Article, SportsAdapter.SportsViewHolder> {
 
     HeadlineListItemBinding binding;
+    Activity activity;
 
-    public SportsAdapter() {
+    public SportsAdapter(Activity activity) {
         super(diffUtilCallback);
+        this.activity = activity;
     }
 
 
@@ -40,13 +45,16 @@ public class SportsAdapter extends ListAdapter<Article, SportsAdapter.SportsView
     class SportsViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTv;
         private TextView descriptionTv;
-        private ImageView headlineImage;
+        private ImageView headlineImage, share,like;
 
         public SportsViewHolder(HeadlineListItemBinding binding) {
             super(binding.getRoot());
             titleTv = binding.title;
             descriptionTv = binding.description;
             headlineImage = binding.articleImage;
+            like = binding.like;
+            like.setVisibility(View.INVISIBLE);
+            share = binding.share;
         }
 
         private void bind(Article article) {
@@ -54,6 +62,9 @@ public class SportsAdapter extends ListAdapter<Article, SportsAdapter.SportsView
             descriptionTv.setText(article.getDescription());
             String path = article.getUrlToImage();
             Picasso.get().load(path).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(headlineImage);
+            share.setOnClickListener(v -> {
+                AppUtils.shareNewsTitle(v.getContext(), activity, article.getTitle());
+            });
         }
     }
 

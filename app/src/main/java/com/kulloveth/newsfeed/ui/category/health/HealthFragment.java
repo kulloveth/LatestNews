@@ -24,7 +24,7 @@ public class HealthFragment extends Fragment {
 
     private static final String TAG = HealthFragment.class.getSimpleName();
     CategoryViewModel viewModel;
-    com.kulloveth.newsfeed.ui.category.fragments.health.HealthAdapter adapter;
+    HealthAdapter adapter;
     RecyclerView recyclerView;
     FragmentHealthBinding binding;
 
@@ -48,7 +48,7 @@ public class HealthFragment extends Fragment {
 
         recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        adapter = new com.kulloveth.newsfeed.ui.category.fragments.health.HealthAdapter();
+        adapter = new HealthAdapter(requireActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
         setUpHealthArticle();

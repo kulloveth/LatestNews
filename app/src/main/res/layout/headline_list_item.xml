@@ -54,6 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/half_standard_padding"
+                android:id="@+id/share"
                 android:contentDescription="@string/share"
                 android:src="@drawable/ic_share_black_24dp" />
 
