@@ -124,6 +124,7 @@ public class HeadlineFragment extends Fragment {
     }
 
 
+
     private void setUpSearchObservable() {
         RxSearchObservable.fromView(searchView)
                 .debounce(300, TimeUnit.MILLISECONDS)
