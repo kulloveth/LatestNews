@@ -13,4 +13,7 @@
     <string name="share">Share</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="widget_update">Widget Update</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
 </resources>

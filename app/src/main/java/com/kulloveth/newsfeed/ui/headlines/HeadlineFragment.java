@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,9 +25,17 @@ import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHeadlineBinding;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
+import com.kulloveth.newsfeed.remote.model.NewsResponse;
+import com.kulloveth.newsfeed.ui.RxSearchObservable;
 import com.kulloveth.newsfeed.ui.widget.WidgetService;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class HeadlineFragment extends Fragment {
 
@@ -36,6 +45,7 @@ public class HeadlineFragment extends Fragment {
     FragmentHeadlineBinding binding;
     RecyclerView recyclerView;
     HeadlineAdapter adapter;
+    SearchView searchView;
 
     ArrayList<Article> articleArrayList = new ArrayList<>();
 
@@ -85,8 +95,12 @@ public class HeadlineFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.headline_detail_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        searchView = (SearchView) searchItem.getActionView();
+        setUpSearchObservable();
+
     }
 
     @Override
@@ -98,5 +112,30 @@ public class HeadlineFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void setUpSearchObservable() {
+        RxSearchObservable.fromView(searchView)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .filter(text -> {
+                    if (text.isEmpty()) {
+                        adapter.submitList(articleArrayList);
+                        return true;
+                    } else {
+                        return true;
+                    }
+                })
+                .distinctUntilChanged()
+                .switchMap((Function<String, ObservableSource<ArrayList<Article>>>) query -> {
+                    //query = "%" + query + "%";
+                    return viewModel.searchNote(query, ApiUtil.API_KEY);
+
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(articles -> adapter.submitList(articles), throwable -> {
+                    Log.e(TAG, "setUpSearchObservable: error searching" + throwable.getMessage());
+                });
     }
 }

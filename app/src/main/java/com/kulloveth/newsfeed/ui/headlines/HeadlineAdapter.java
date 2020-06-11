@@ -38,9 +38,6 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
     public void onBindViewHolder(@NonNull HeadLineViewHolder holder, int position) {
         Article article = getItem(position);
         holder.bind(article);
-        holder.itemView.setOnClickListener(v -> {
-            cLickedListener.itemClicked(article);
-        });
     }
 
     class HeadLineViewHolder extends RecyclerView.ViewHolder {
@@ -58,7 +55,10 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
         private void bind(Article article) {
             titleTv.setText(article.getTitle());
             descriptionTv.setText(article.getDescription());
-            Picasso.get().load(article.getUrlToImage()).into(headlineImage);
+            String path = article.getUrlToImage();
+            if (!path.isEmpty()) {
+                Picasso.get().load(path).into(headlineImage);
+            }
         }
     }
 

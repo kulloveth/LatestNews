@@ -13,7 +13,10 @@ import com.kulloveth.newsfeed.remote.model.NewsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,4 +53,17 @@ public class HeadlineViewModel extends ViewModel {
         });
         return articlesLiveData;
     }
+
+    // Flowable<ArrayList<Memo>> searchNote(String query);
+
+    Observable searchNote(String query, String apikey) {
+        Observable observable = apiServiceInterface.searchTopHeadLines(query, apikey).delay(2, TimeUnit.SECONDS)
+                .map((Function<NewsResponse, Object>) articles ->
+                        articles.getArticles()).toObservable();
+        //  getmCompositeDisposable().add(observable.subscribe());
+        return observable;
+
+
+    }
+
 }
