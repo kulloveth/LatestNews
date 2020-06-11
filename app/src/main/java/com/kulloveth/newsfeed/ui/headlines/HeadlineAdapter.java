@@ -1,16 +1,22 @@
 package com.kulloveth.newsfeed.ui.headlines;
 
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kulloveth.newsfeed.databinding.HeadlineListItemBinding;
 import com.kulloveth.newsfeed.remote.model.Article;
+import com.squareup.picasso.Picasso;
 
 public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLineViewHolder> {
+
+    HeadlineListItemBinding binding;
 
     public HeadlineAdapter() {
         super(diffUtilCallback);
@@ -19,17 +25,32 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
     @NonNull
     @Override
     public HeadLineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        binding = HeadlineListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new HeadLineViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HeadLineViewHolder holder, int position) {
-
+        Article article = getItem(position);
+        holder.bind(article);
     }
 
     class HeadLineViewHolder extends RecyclerView.ViewHolder {
-        public HeadLineViewHolder(@NonNull View itemView) {
-            super(itemView);
+        private TextView titleTv;
+        private TextView descriptionTv;
+        private ImageView headlineImage;
+
+        public HeadLineViewHolder(HeadlineListItemBinding binding) {
+            super(binding.getRoot());
+            titleTv = binding.title;
+            descriptionTv = binding.description;
+            headlineImage = binding.articleImage;
+        }
+
+        private void bind(Article article) {
+            titleTv.setText(article.getTitle());
+            descriptionTv.setText(article.getDescription());
+            Picasso.get().load(article.getUrlToImage()).into(headlineImage);
         }
     }
 

@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:elevation="@dimen/elevation_standard"
+        app:layout_constraintBottom_toTopOf="@id/headline_rv"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
