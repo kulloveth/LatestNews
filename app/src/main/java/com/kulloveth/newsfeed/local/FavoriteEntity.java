@@ -10,8 +10,8 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
-@Entity
-public class ArticleEntity implements Parcelable {
+@Entity(tableName = "article_info")
+public class FavoriteEntity implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "article_id")
@@ -27,7 +27,7 @@ public class ArticleEntity implements Parcelable {
     private String urlToImage;
 
 
-    public ArticleEntity(int id, String title, String description, String urlToImage) {
+    public FavoriteEntity(int id, String title, String description, String urlToImage) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -35,25 +35,25 @@ public class ArticleEntity implements Parcelable {
     }
 
     @Ignore
-    public ArticleEntity() {
+    public FavoriteEntity() {
     }
 
-    protected ArticleEntity(Parcel in) {
+    protected FavoriteEntity(Parcel in) {
         title = in.readString();
         description = in.readString();
         urlToImage = in.readString();
 
     }
 
-    public static final Creator<ArticleEntity> CREATOR = new Creator<ArticleEntity>() {
+    public static final Creator<FavoriteEntity> CREATOR = new Creator<FavoriteEntity>() {
         @Override
-        public ArticleEntity createFromParcel(Parcel in) {
-            return new ArticleEntity(in);
+        public FavoriteEntity createFromParcel(Parcel in) {
+            return new FavoriteEntity(in);
         }
 
         @Override
-        public ArticleEntity[] newArray(int size) {
-            return new ArticleEntity[size];
+        public FavoriteEntity[] newArray(int size) {
+            return new FavoriteEntity[size];
         }
     };
 
@@ -87,8 +87,8 @@ public class ArticleEntity implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ArticleEntity)) return false;
-        ArticleEntity article = (ArticleEntity) o;
+        if (!(o instanceof FavoriteEntity)) return false;
+        FavoriteEntity article = (FavoriteEntity) o;
         return
                 getTitle().equals(article.getTitle()) &&
                         getDescription().equals(article.getDescription()) &&
