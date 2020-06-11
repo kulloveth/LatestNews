@@ -1,4 +1,4 @@
-package com.kulloveth.newsfeed.ui.category.technology;
+package com.kulloveth.newsfeed.ui.category.category;
 
 import android.util.Log;
 
@@ -21,22 +21,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TechnologyViewModel extends ViewModel {
+public class CategoryViewModel extends ViewModel {
 
-    private static final String TAG = TechnologyViewModel.class.getSimpleName();
+    private static final String TAG = CategoryViewModel.class.getSimpleName();
 
     private MutableLiveData<ArrayList<Article>> articlesLiveData;
     private ApiServiceInterface apiServiceInterface;
     CompositeDisposable disposable;
 
-    public TechnologyViewModel() {
+    public CategoryViewModel() {
         articlesLiveData = new MutableLiveData<>();
         apiServiceInterface = ApiUtil.getNewsApiServiceInterface();
         disposable = new CompositeDisposable();
     }
 
     //fetch topheadline by countries
-    public  LiveData<ArrayList<Article>> getTechnologyCategory(String category, String apiKey) {
+    public LiveData<ArrayList<Article>> getTechnologyCategory(String category, String apiKey) {
         apiServiceInterface.getTopHeadLinesByCategory(category, apiKey).enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
