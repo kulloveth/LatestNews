@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity(tableName = "article_info")
 public class FavoriteEntity implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo(name = "article_id")
     private int id;
 
@@ -25,6 +25,14 @@ public class FavoriteEntity implements Parcelable {
 
     @ColumnInfo(name = "image_url")
     private String urlToImage;
+
+
+    @Ignore
+    public FavoriteEntity(String title, String description, String urlToImage) {
+        this.title = title;
+        this.description = description;
+        this.urlToImage = urlToImage;
+    }
 
 
     public FavoriteEntity(int id, String title, String description, String urlToImage) {
@@ -56,6 +64,22 @@ public class FavoriteEntity implements Parcelable {
             return new FavoriteEntity[size];
         }
     };
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
+    }
 
     public int getId() {
         return id;

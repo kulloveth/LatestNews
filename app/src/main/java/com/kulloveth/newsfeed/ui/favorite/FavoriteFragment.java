@@ -6,7 +6,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,8 @@ import com.kulloveth.newsfeed.databinding.FragmentFavoriteBinding;
 public class FavoriteFragment extends Fragment {
 
     FragmentFavoriteBinding binding;
+    FavoriteVieModel favoriteVieModel;
+    private static final String TAG = FavoriteFragment.class.getSimpleName();
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -47,6 +53,17 @@ public class FavoriteFragment extends Fragment {
         Toolbar toolbar = binding.appBar.toolbar;
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         AppUtils.setToolbarTitle(getString(R.string.favorite_fragment_title), ((AppCompatActivity) requireActivity()));
+
+        FavoriteAdapter adapter = new FavoriteAdapter(requireActivity());
+        RecyclerView recyclerView = binding.headlineRv;
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        recyclerView.setAdapter(adapter);
+
+        favoriteVieModel = new ViewModelProvider(this).get(FavoriteVieModel.class);
+        favoriteVieModel.fetchFavoriteEntity().observe(requireActivity(), favorites ->{
+                Log.d(TAG, "onActivityCreated: "+ favorites.size());
+            adapter.submitList(favorites);});
+
 
     }
 }

@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.kulloveth.newsfeed.local.FavoriteDao;
@@ -13,23 +14,39 @@ import com.kulloveth.newsfeed.local.FavoriteEntity;
 
 import java.util.List;
 
+import io.reactivex.Completable;
+
 public class FavoriteVieModel extends AndroidViewModel {
     private MutableLiveData<List<FavoriteEntity>> favoriteLiveData;
     FavoriteEntity favoriteEntity;
-    FavoriteDatabase database;
     private FavoriteDao favoriteDao;
+    FavoriteDatabase database;
 
-    public FavoriteVieModel(@NonNull Application application) {
+
+
+
+
+    public FavoriteVieModel(Application application) {
         super(application);
-
-        favoriteLiveData = new MutableLiveData<>();
-        favoriteEntity = new FavoriteEntity();
         database = FavoriteDatabase.getINSTANCE(application);
         favoriteDao = database.favoriteDao();
+        favoriteLiveData = new MutableLiveData<>();
+        favoriteEntity = new FavoriteEntity();
+
+
     }
 
     public void insertFavorite(FavoriteEntity favoriteEntity) {
         new InsertAsyncTask(favoriteDao).execute(favoriteEntity);
+    }
+
+
+    public LiveData<List<FavoriteEntity>> fetchFavoriteEntity() {
+        return favoriteDao.fetchFavorite();
+    }
+
+    public void deleteFavorite(FavoriteEntity favoriteEntity) {
+        // favoriteDao.deleteFavorite(favoriteEntity)
     }
 
     private class InsertAsyncTask extends AsyncTask<FavoriteEntity, Void, Void> {

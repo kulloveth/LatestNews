@@ -13,7 +13,7 @@ public abstract class FavoriteDatabase extends RoomDatabase {
     public static volatile FavoriteDatabase INSTANCE;
 
     public static FavoriteDatabase getINSTANCE(final Context context) {
-        if (INSTANCE != null) {
+        if (INSTANCE == null) {
             synchronized (FavoriteDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), FavoriteDatabase.class, "favorite-db")

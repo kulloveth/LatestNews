@@ -18,6 +18,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,10 +26,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHeadlineBinding;
+import com.kulloveth.newsfeed.local.FavoriteEntity;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.remote.model.NewsResponse;
 import com.kulloveth.newsfeed.ui.RxSearchObservable;
+import com.kulloveth.newsfeed.ui.favorite.FavoriteVieModel;
+import com.kulloveth.newsfeed.ui.favorite.MyViewModelFactory;
 import com.kulloveth.newsfeed.ui.widget.WidgetService;
 
 import java.util.ArrayList;
@@ -39,11 +43,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class HeadlineFragment extends Fragment {
+public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCLickedListener {
 
     private static final String TAG = HeadlineFragment.class.getSimpleName();
 
     HeadlineViewModel viewModel;
+    FavoriteVieModel favoriteVieModel;
     FragmentHeadlineBinding binding;
     RecyclerView recyclerView;
     private HeadlineAdapter adapter;
@@ -79,8 +84,10 @@ public class HeadlineFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         AppUtils.setToolbarTitle(getString(R.string.headline_fragment_category), ((AppCompatActivity) requireActivity()));
-        viewModel = new ViewModelProvider(this).get(HeadlineViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(HeadlineViewModel.class);
+        favoriteVieModel =  new ViewModelProvider(this,new MyViewModelFactory(requireActivity().getApplication())).get(FavoriteVieModel.class);
         setUpHeadLineArticle();
+        adapter.setClickedListener(this::itemClicked);
 
     }
 
@@ -122,7 +129,6 @@ public class HeadlineFragment extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
-
 
 
     private void setUpSearchObservable() {
@@ -184,5 +190,12 @@ public class HeadlineFragment extends Fragment {
         AlertDialog alert = alertDialog.create();
         alert.setCanceledOnTouchOutside(true);
         alert.show();
+    }
+
+    @Override
+    public void itemClicked(Article article,int position) {
+        FavoriteEntity favoriteEntity = new FavoriteEntity(position,article.getTitle(), article.getDescription(), article.getUrlToImage());
+        favoriteVieModel.insertFavorite(favoriteEntity);
+        Snackbar.make(requireView(), "you liked an article", Snackbar.LENGTH_SHORT).show();
     }
 }

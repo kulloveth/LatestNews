@@ -1,8 +1,7 @@
-package com.kulloveth.newsfeed.ui.headlines;
+package com.kulloveth.newsfeed.ui.favorite;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,16 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.HeadlineListItemBinding;
+import com.kulloveth.newsfeed.local.FavoriteEntity;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.squareup.picasso.Picasso;
 
-public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLineViewHolder> {
+public class FavoriteAdapter extends ListAdapter<FavoriteEntity, FavoriteAdapter.FavoriteViewHolder> {
 
     HeadlineListItemBinding binding;
     Activity activity;
     ItemCLickedListener clickedListener;
 
-    public HeadlineAdapter(Activity activity) {
+    public FavoriteAdapter(Activity activity) {
         super(diffUtilCallback);
         this.activity = activity;
     }
@@ -35,23 +35,23 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
 
     @NonNull
     @Override
-    public HeadLineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = HeadlineListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new HeadLineViewHolder(binding);
+        return new FavoriteViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HeadLineViewHolder holder, int position) {
-        Article article = getItem(position);
+    public void onBindViewHolder(@NonNull FavoriteViewHolder holder, int position) {
+        FavoriteEntity article = getItem(position);
         holder.bind(article);
     }
 
-    class HeadLineViewHolder extends RecyclerView.ViewHolder {
+    class FavoriteViewHolder extends RecyclerView.ViewHolder {
         private TextView titleTv;
         private TextView descriptionTv;
         private ImageView headlineImage, share, like;
 
-        public HeadLineViewHolder(HeadlineListItemBinding binding) {
+        public FavoriteViewHolder(HeadlineListItemBinding binding) {
             super(binding.getRoot());
             titleTv = binding.title;
             descriptionTv = binding.description;
@@ -60,7 +60,7 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
             share = binding.share;
         }
 
-        private void bind(Article article) {
+        private void bind(FavoriteEntity article) {
             titleTv.setText(article.getTitle());
             descriptionTv.setText(article.getDescription());
             String path = article.getUrlToImage();
@@ -72,19 +72,19 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
         }
     }
 
-    private static DiffUtil.ItemCallback<Article> diffUtilCallback = new DiffUtil.ItemCallback<Article>() {
+    private static DiffUtil.ItemCallback<FavoriteEntity> diffUtilCallback = new DiffUtil.ItemCallback<FavoriteEntity>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
+        public boolean areItemsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
             return oldItem.getId() == newItem.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Article oldItem, @NonNull Article newItem) {
+        public boolean areContentsTheSame(@NonNull FavoriteEntity oldItem, @NonNull FavoriteEntity newItem) {
             return oldItem.equals(newItem);
         }
     };
 
     public interface ItemCLickedListener {
-        void itemClicked(Article article,int position);
+        void itemClicked(FavoriteEntity article, int position);
     }
 }
