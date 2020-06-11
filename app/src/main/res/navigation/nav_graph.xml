@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_headline"
-        android:name="com.kulloveth.newsfeed.ui.headlines.HeadlineActivity"
+        android:name="com.kulloveth.newsfeed.ui.headlines.HeadlineFragment"
         android:label="activity_headline"
-        tools:layout="@layout/activity_headline" />
+        tools:layout="@layout/fragment_headline" />
     <fragment
         android:id="@+id/navigation_categories"
         android:name="com.kulloveth.newsfeed.ui.category.CategoryFragment"
