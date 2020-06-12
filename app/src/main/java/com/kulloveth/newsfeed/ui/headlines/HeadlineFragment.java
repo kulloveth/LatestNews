@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kulloveth.newsfeed.AppUtils;
@@ -86,9 +87,11 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         AppUtils.setToolbarTitle(getString(R.string.headline_fragment_category), ((AppCompatActivity) requireActivity()));
         viewModel = new ViewModelProvider(requireActivity()).get(HeadlineViewModel.class);
-        favoriteVieModel =  new ViewModelProvider(this,new MyViewModelFactory(requireActivity().getApplication())).get(FavoriteVieModel.class);
+        favoriteVieModel = new ViewModelProvider(this, new MyViewModelFactory(requireActivity().getApplication())).get(FavoriteVieModel.class);
         setUpHeadLineArticle();
         adapter.setClickedListener(this::itemClicked);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        binding.adView.loadAd(adRequest);
 
     }
 
@@ -194,8 +197,8 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
     }
 
     @Override
-    public void itemClicked(Article article,int position) {
-        FavoriteEntity favoriteEntity = new FavoriteEntity(position,article.getTitle(), article.getDescription(), article.getUrlToImage());
+    public void itemClicked(Article article, int position) {
+        FavoriteEntity favoriteEntity = new FavoriteEntity(position, article.getTitle(), article.getDescription(), article.getUrlToImage());
         favoriteVieModel.insertFavorite(favoriteEntity);
         Snackbar.make(requireView(), "you liked an article", Snackbar.LENGTH_SHORT).show();
         Bundle bundle = new Bundle();
