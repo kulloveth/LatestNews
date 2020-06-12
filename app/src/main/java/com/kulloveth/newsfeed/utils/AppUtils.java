@@ -1,4 +1,4 @@
-package com.kulloveth.newsfeed;
+package com.kulloveth.newsfeed.utils;
 
 
 import android.app.Activity;
@@ -7,6 +7,8 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ShareCompat;
+
+import com.kulloveth.newsfeed.R;
 
 import java.util.Objects;
 

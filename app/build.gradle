@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+    signingConfigs {
+        NewsFeed {
+            storeFile file('C:\\Users\\KULLOVETH\\Newsfeed.jks')
+            storePassword 'Kullest20'
+            keyAlias = 'Loveth Nwokike'
+            keyPassword 'Kullest20'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -19,6 +27,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.NewsFeed
+            versionNameSuffix = '1.0'
+            applicationIdSuffix = 'news'
         }
     }
 

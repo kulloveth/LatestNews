@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.kulloveth.newsfeed.AppUtils;
+import com.kulloveth.newsfeed.utils.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentFavoriteBinding;
 import com.kulloveth.newsfeed.local.FavoriteEntity;

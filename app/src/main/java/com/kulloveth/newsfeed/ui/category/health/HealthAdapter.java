@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kulloveth.newsfeed.AppUtils;
+import com.kulloveth.newsfeed.utils.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.HeadlineListItemBinding;
 import com.kulloveth.newsfeed.remote.model.Article;
