@@ -15,14 +15,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentFavoriteBinding;
+import com.kulloveth.newsfeed.local.FavoriteEntity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment  implements FavoriteAdapter.ItemCLickedListener {
 
     FragmentFavoriteBinding binding;
     FavoriteVieModel favoriteVieModel;
@@ -58,12 +60,17 @@ public class FavoriteFragment extends Fragment {
         RecyclerView recyclerView = binding.headlineRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
+        adapter.setClickedListener(this);
 
         favoriteVieModel = new ViewModelProvider(this).get(FavoriteVieModel.class);
         favoriteVieModel.fetchFavoriteEntity().observe(requireActivity(), favorites ->{
                 Log.d(TAG, "onActivityCreated: "+ favorites.size());
             adapter.submitList(favorites);});
+    }
 
-
+    @Override
+    public void itemClicked(FavoriteEntity article, int position) {
+        favoriteVieModel.deleteFavorite(article);
+        Snackbar.make(requireView(), "you unliked an article", Snackbar.LENGTH_SHORT).show();
     }
 }

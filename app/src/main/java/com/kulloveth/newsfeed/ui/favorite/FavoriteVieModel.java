@@ -15,12 +15,17 @@ import com.kulloveth.newsfeed.local.FavoriteEntity;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FavoriteVieModel extends AndroidViewModel {
     private MutableLiveData<List<FavoriteEntity>> favoriteLiveData;
     FavoriteEntity favoriteEntity;
     private FavoriteDao favoriteDao;
     FavoriteDatabase database;
+    CompositeDisposable disposable ;
 
 
 
@@ -32,6 +37,7 @@ public class FavoriteVieModel extends AndroidViewModel {
         favoriteDao = database.favoriteDao();
         favoriteLiveData = new MutableLiveData<>();
         favoriteEntity = new FavoriteEntity();
+        disposable = new CompositeDisposable();
 
 
     }
@@ -46,7 +52,9 @@ public class FavoriteVieModel extends AndroidViewModel {
     }
 
     public void deleteFavorite(FavoriteEntity favoriteEntity) {
-        // favoriteDao.deleteFavorite(favoriteEntity)
+      Completable completable = favoriteDao.deleteFavorite(favoriteEntity).subscribeOn(Schedulers.io());
+      disposable.add(completable.subscribe());
+
     }
 
     private class InsertAsyncTask extends AsyncTask<FavoriteEntity, Void, Void> {
@@ -61,5 +69,11 @@ public class FavoriteVieModel extends AndroidViewModel {
             favoriteDao.insertFavorite(favoriteEntities[0]);
             return null;
         }
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        disposable.dispose();
     }
 }

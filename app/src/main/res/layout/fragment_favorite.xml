@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.favorite.FavoriteFragment">
 
@@ -15,6 +16,7 @@
         android:id="@+id/headline_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:descendantFocusability="afterDescendants"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

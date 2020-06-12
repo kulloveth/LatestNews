@@ -18,18 +18,17 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.kulloveth.newsfeed.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHeadlineBinding;
 import com.kulloveth.newsfeed.local.FavoriteEntity;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
-import com.kulloveth.newsfeed.remote.model.NewsResponse;
 import com.kulloveth.newsfeed.ui.RxSearchObservable;
 import com.kulloveth.newsfeed.ui.favorite.FavoriteVieModel;
 import com.kulloveth.newsfeed.ui.favorite.MyViewModelFactory;
@@ -54,6 +53,7 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
     private HeadlineAdapter adapter;
     private SearchView searchView;
     private Toolbar toolbar;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     ArrayList<Article> articleArrayList = new ArrayList<>();
 
@@ -64,6 +64,7 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(requireActivity());
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
                 .distinctUntilChanged()
                 .switchMap((Function<String, ObservableSource<ArrayList<Article>>>) query -> {
                     //query = "%" + query + "%";
-                    return viewModel.searchNote(query, ApiUtil.API_KEY);
+                    return viewModel.searchHeadLine(query, ApiUtil.API_KEY);
 
                 })
                 .subscribeOn(Schedulers.io())
@@ -197,5 +198,9 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
         FavoriteEntity favoriteEntity = new FavoriteEntity(position,article.getTitle(), article.getDescription(), article.getUrlToImage());
         favoriteVieModel.insertFavorite(favoriteEntity);
         Snackbar.make(requireView(), "you liked an article", Snackbar.LENGTH_SHORT).show();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, article.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, article.getUrlToImage());
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }

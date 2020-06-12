@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,10 +58,13 @@ public class HeadlineViewModel extends ViewModel {
         return articlesLiveData;
     }
 
-    Observable searchNote(String query, String apikey) {
+    Observable searchHeadLine
+            (String query, String apikey) {
         Observable observable = apiServiceInterface.searchTopHeadLines(query, apikey).delay(2, TimeUnit.SECONDS)
                 .map((Function<NewsResponse, Object>) articles ->
-                        articles.getArticles()).toObservable();
+                        articles.getArticles()).toObservable().onErrorResumeNext(throwable -> {
+                    Log.e(TAG, "searchNote: "+throwable);
+                });
         disposable.add(observable.subscribe());
         return observable;
 

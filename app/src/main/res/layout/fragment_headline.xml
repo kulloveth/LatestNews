@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:focusable="true"
     tools:context=".ui.headlines.HeadlineFragment">
 
     <include
@@ -20,6 +21,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_bar"
+        android:descendantFocusability="afterDescendants"
         tools:layout_height="wrap_content"
         tools:listitem="@layout/headline_list_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
