@@ -17,14 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:textSize="18sp"
+            android:textSize="@dimen/eighteen_sp"
             android:textStyle="bold"
             tools:text="Exclusive Headline" />
 
         <ImageView
             android:id="@+id/article_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/twooo_dp"
             android:contentDescription="@string/news_image"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />

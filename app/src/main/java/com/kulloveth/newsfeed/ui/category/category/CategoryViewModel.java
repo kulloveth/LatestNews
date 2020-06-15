@@ -10,13 +10,11 @@ import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.api.ApiServiceInterface;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.remote.model.NewsResponse;
+import com.kulloveth.newsfeed.utils.ProgressListener;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +26,7 @@ public class CategoryViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Article>> articlesLiveData;
     private ApiServiceInterface apiServiceInterface;
     CompositeDisposable disposable;
+    ProgressListener listener;
 
     public CategoryViewModel() {
         articlesLiveData = new MutableLiveData<>();
@@ -35,12 +34,18 @@ public class CategoryViewModel extends ViewModel {
         disposable = new CompositeDisposable();
     }
 
+    public void setListener(ProgressListener listener) {
+        this.listener = listener;
+    }
+
     //fetch topheadline by countries
     public LiveData<ArrayList<Article>> getTechnologyCategory(String category, String apiKey) {
+        listener.shoLoading();
         apiServiceInterface.getTopHeadLinesByCategory(category, apiKey).enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 if (response.isSuccessful()) {
+                    listener.showMovies();
                     ArrayList<Article> articles = response.body().getArticles();
                     articlesLiveData.setValue(articles);
                 } else {
@@ -50,21 +55,13 @@ public class CategoryViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
+                listener.showNoInternet();
                 Log.e(TAG, "onFailure: error" + t.getMessage());
             }
         });
         return articlesLiveData;
     }
 
-    Observable searchNote(String query, String apikey) {
-        Observable observable = apiServiceInterface.searchTopHeadLines(query, apikey).delay(2, TimeUnit.SECONDS)
-                .map((Function<NewsResponse, Object>) articles ->
-                        articles.getArticles()).toObservable();
-        disposable.add(observable.subscribe());
-        return observable;
-
-
-    }
 
     @Override
     protected void onCleared() {

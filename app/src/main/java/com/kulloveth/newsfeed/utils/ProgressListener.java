@@ -1,4 +1,10 @@
 package com.kulloveth.newsfeed.utils;
 
-public class ProgressListener {
+public interface ProgressListener {
+    void shoLoading();
+
+    void showMovies();
+
+    void showNoInternet();
+
 }

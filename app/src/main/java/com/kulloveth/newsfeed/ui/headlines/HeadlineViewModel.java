@@ -10,15 +10,14 @@ import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.api.ApiServiceInterface;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.remote.model.NewsResponse;
+import com.kulloveth.newsfeed.utils.ProgressListener;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +29,11 @@ public class HeadlineViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Article>> articlesLiveData;
     private ApiServiceInterface apiServiceInterface;
     CompositeDisposable disposable;
+    private ProgressListener progressListener;
+
+    public void setProgressListener(ProgressListener progressListener) {
+        this.progressListener = progressListener;
+    }
 
     public HeadlineViewModel() {
         articlesLiveData = new MutableLiveData<>();
@@ -39,10 +43,12 @@ public class HeadlineViewModel extends ViewModel {
 
     //fetch topheadline by countries
     LiveData<ArrayList<Article>> getTopHeadlineByCountry(String country, String apiKey) {
+        progressListener.shoLoading();
         apiServiceInterface.getTopHeadLinesByCountry(country, apiKey).enqueue(new Callback<NewsResponse>() {
             @Override
             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
                 if (response.isSuccessful()) {
+                    progressListener.showMovies();
                     ArrayList<Article> articles = response.body().getArticles();
                     articlesLiveData.setValue(articles);
                 } else {
@@ -52,6 +58,7 @@ public class HeadlineViewModel extends ViewModel {
 
             @Override
             public void onFailure(Call<NewsResponse> call, Throwable t) {
+                progressListener.showNoInternet();
                 Log.e(TAG, "onFailure: error" + t.getMessage());
             }
         });

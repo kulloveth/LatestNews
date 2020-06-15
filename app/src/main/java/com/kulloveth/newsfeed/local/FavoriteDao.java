@@ -12,13 +12,17 @@ import java.util.List;
 
 import io.reactivex.Completable;
 
+/**
+ * Create statement to Query Room db
+ */
+
 @Dao
 public interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insertFavorite(FavoriteEntity favoriteEntity);
+     void insertFavorite(FavoriteEntity favoriteEntity);
 
     @Query("Select * from article_info")
-    public LiveData<List<FavoriteEntity>> fetchFavorite();
+    LiveData<List<FavoriteEntity>> fetchFavorite();
 
     @Delete
     Completable deleteFavorite(FavoriteEntity favoriteEntity);

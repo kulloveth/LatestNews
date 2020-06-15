@@ -10,6 +10,12 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
+
+/**
+ * A model Class to represent a
+ * table in room db
+ * */
+
 @Entity(tableName = "article_info")
 public class FavoriteEntity implements Parcelable {
 

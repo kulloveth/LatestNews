@@ -6,6 +6,11 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+/**
+ * Create Room Db with table
+ * FavoriteEntity
+ * */
+
 @Database(entities = FavoriteEntity.class, version = 1, exportSchema = false)
 public abstract class FavoriteDatabase extends RoomDatabase {
     public abstract FavoriteDao favoriteDao();

@@ -1,6 +1,6 @@
 package com.kulloveth.newsfeed.ui.headlines;
 
-import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.kulloveth.newsfeed.utils.AppUtils;
 import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHeadlineBinding;
 import com.kulloveth.newsfeed.local.FavoriteEntity;
@@ -34,6 +33,8 @@ import com.kulloveth.newsfeed.ui.RxSearchObservable;
 import com.kulloveth.newsfeed.ui.favorite.FavoriteVieModel;
 import com.kulloveth.newsfeed.ui.favorite.MyViewModelFactory;
 import com.kulloveth.newsfeed.ui.widget.WidgetService;
+import com.kulloveth.newsfeed.utils.AppUtils;
+import com.kulloveth.newsfeed.utils.ProgressListener;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -43,9 +44,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCLickedListener {
+public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCLickedListener, ProgressListener {
 
     private static final String TAG = HeadlineFragment.class.getSimpleName();
+    HeadlineAdapter.ScrollDirection scrollDirection;
 
     HeadlineViewModel viewModel;
     FavoriteVieModel favoriteVieModel;
@@ -87,11 +89,13 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
         AppUtils.setToolbarTitle(getString(R.string.headline_fragment_category), ((AppCompatActivity) requireActivity()));
         viewModel = new ViewModelProvider(requireActivity()).get(HeadlineViewModel.class);
+        viewModel.setProgressListener(this);
         favoriteVieModel = new ViewModelProvider(this, new MyViewModelFactory(requireActivity().getApplication())).get(FavoriteVieModel.class);
         setUpHeadLineArticle();
         adapter.setClickedListener(this::itemClicked);
         AdRequest adRequest = new AdRequest.Builder().build();
         binding.adView.loadAd(adRequest);
+
 
     }
 
@@ -104,6 +108,20 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
             articleArrayList = articles;
             adapter.submitList(articles);
         });
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 0) {
+                    scrollDirection = HeadlineAdapter.ScrollDirection.DOWN;
+                } else {
+                    scrollDirection = HeadlineAdapter.ScrollDirection.TOP;
+                }
+            }
+        });
+        adapter.scrollDirection = scrollDirection;
     }
 
 
@@ -123,7 +141,7 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
         switch (itemId) {
             case R.id.update:
                 WidgetService.actionUpdateWidget(requireActivity(), articleArrayList);
-                Snackbar.make(requireView(), "Widget Updated", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(requireView(), R.string.widget_update_msg, Snackbar.LENGTH_LONG).show();
                 return true;
 
             case R.id.filter:
@@ -164,31 +182,28 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
         alertDialog.setTitle("AlertDialog");
         String[] items = {"Germany", "United States", "Japan", "Nigeria", "California"};
         int checkedItem = 1;
-        alertDialog.setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case 0:
-                        viewModel.getTopHeadlineByCountry("de", ApiUtil.API_KEY);
-                        AppUtils.setToolbarTitle("Germany", ((AppCompatActivity) requireActivity()));
-                        break;
-                    case 1:
-                        viewModel.getTopHeadlineByCountry("us", ApiUtil.API_KEY);
-                        AppUtils.setToolbarTitle("United States", ((AppCompatActivity) requireActivity()));
-                        break;
-                    case 2:
-                        viewModel.getTopHeadlineByCountry("jp", ApiUtil.API_KEY);
-                        AppUtils.setToolbarTitle("Japan", ((AppCompatActivity) requireActivity()));
-                        break;
-                    case 3:
-                        viewModel.getTopHeadlineByCountry("ng", ApiUtil.API_KEY);
-                        AppUtils.setToolbarTitle("Nigeria", ((AppCompatActivity) requireActivity()));
-                        break;
-                    case 4:
-                        viewModel.getTopHeadlineByCountry("ca", ApiUtil.API_KEY);
-                        AppUtils.setToolbarTitle("California", ((AppCompatActivity) requireActivity()));
-                        break;
-                }
+        alertDialog.setSingleChoiceItems(items, checkedItem, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    viewModel.getTopHeadlineByCountry("de", ApiUtil.API_KEY);
+                    AppUtils.setToolbarTitle(getString(R.string.de_title), ((AppCompatActivity) requireActivity()));
+                    break;
+                case 1:
+                    viewModel.getTopHeadlineByCountry("us", ApiUtil.API_KEY);
+                    AppUtils.setToolbarTitle(getString(R.string.u_title), ((AppCompatActivity) requireActivity()));
+                    break;
+                case 2:
+                    viewModel.getTopHeadlineByCountry("jp", ApiUtil.API_KEY);
+                    AppUtils.setToolbarTitle("Japan", ((AppCompatActivity) requireActivity()));
+                    break;
+                case 3:
+                    viewModel.getTopHeadlineByCountry("ng", ApiUtil.API_KEY);
+                    AppUtils.setToolbarTitle(getString(R.string.ng_title), ((AppCompatActivity) requireActivity()));
+                    break;
+                case 4:
+                    viewModel.getTopHeadlineByCountry("ca", ApiUtil.API_KEY);
+                    AppUtils.setToolbarTitle(getString(R.string.california_title), ((AppCompatActivity) requireActivity()));
+                    break;
             }
         });
         AlertDialog alert = alertDialog.create();
@@ -200,10 +215,30 @@ public class HeadlineFragment extends Fragment implements HeadlineAdapter.ItemCL
     public void itemClicked(Article article, int position) {
         FavoriteEntity favoriteEntity = new FavoriteEntity(position, article.getTitle(), article.getDescription(), article.getUrlToImage());
         favoriteVieModel.insertFavorite(favoriteEntity);
-        Snackbar.make(requireView(), "you liked an article", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(requireView(), R.string.liked_article_mesage, Snackbar.LENGTH_SHORT).show();
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, article.getTitle());
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, article.getUrlToImage());
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    @Override
+    public void shoLoading() {
+        if (AppUtils.isConnected(requireActivity())) {
+            binding.progressbar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showMovies() {
+        binding.progressbar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showNoInternet() {
+        Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
     }
 }

@@ -11,8 +11,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentCategoryBinding;
-import com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter;
 
 import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.ENTERTAINMENT_PAGE_INDEX;
 import static com.kulloveth.newsfeed.ui.category.category.CategoryPagerAdapter.HEALTH_PAGE_INDEX;
@@ -62,16 +62,16 @@ public class CategoryFragment extends Fragment {
         String title = "";
         switch (position) {
             case ENTERTAINMENT_PAGE_INDEX:
-                title = "Entertainment";
+                title = getString(R.string.entertainement_txt);
                 break;
             case HEALTH_PAGE_INDEX:
-                title = "Health";
+                title = getString(R.string.health_txt);
                 break;
             case SPORTS_PAGE_INDEX:
-                title = "SPORTS";
+                title = getString(R.string.sports_txt);
                 break;
             case TECHNOLOGY_PAGE_INDEX:
-                title = "TECHNOLOGY";
+                title = getString(R.string.tech_txt);
         }
         return title;
     }

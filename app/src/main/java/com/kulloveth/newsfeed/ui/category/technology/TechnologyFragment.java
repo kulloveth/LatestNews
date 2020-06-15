@@ -12,15 +12,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentTechnologyBinding;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.ui.category.category.CategoryViewModel;
+import com.kulloveth.newsfeed.utils.AppUtils;
+import com.kulloveth.newsfeed.utils.ProgressListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TechnologyFragment extends Fragment {
+public class TechnologyFragment extends Fragment implements ProgressListener {
 
     private static final String TAG = TechnologyFragment.class.getSimpleName();
 
@@ -47,6 +51,7 @@ public class TechnologyFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        viewModel.setListener(this);
         adapter = new TechnologyAdapter(requireActivity());
         recyclerView = binding.subCategoryRv.subCategoryRv;
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -61,5 +66,25 @@ public class TechnologyFragment extends Fragment {
             }
             adapter.submitList(articles);
         });
+    }
+
+    @Override
+    public void shoLoading() {
+        if (AppUtils.isConnected(requireActivity())) {
+            binding.progressbar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showMovies() {
+        binding.progressbar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showNoInternet() {
+        Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
     }
 }

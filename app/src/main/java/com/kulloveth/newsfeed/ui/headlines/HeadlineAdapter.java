@@ -2,7 +2,10 @@ package com.kulloveth.newsfeed.ui.headlines;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
     HeadlineListItemBinding binding;
     Activity activity;
     ItemCLickedListener clickedListener;
+    ScrollDirection scrollDirection = ScrollDirection.DOWN;
 
     public HeadlineAdapter(Activity activity) {
         super(diffUtilCallback);
@@ -63,19 +67,20 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
             titleTv.setText(article.getTitle());
             descriptionTv.setText(article.getDescription());
             String path = article.getUrlToImage();
-            if (path!= null){
+            if (path != null) {
                 if (path.isEmpty())
                     path = null;
-                    Picasso.get().load(path).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(headlineImage);
+                Picasso.get().load(path).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background).into(headlineImage);
 
 
-            }else {
+            } else {
                 headlineImage.setImageResource(R.drawable.ic_launcher_background);
             }
             share.setOnClickListener(v -> {
                 AppUtils.shareNewsTitle(v.getContext(), activity, article.getTitle() + "\n" + article.getUrl());
             });
-            like.setOnClickListener(v -> clickedListener.itemClicked(article,getAdapterPosition()));
+            like.setOnClickListener(v -> clickedListener.itemClicked(article, getAdapterPosition()));
+            animateVie(binding.getRoot());
         }
     }
 
@@ -91,7 +96,24 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
         }
     };
 
+    private void animateVie(View viewToAnimaate) {
+        if (viewToAnimaate.getAnimation() == null) {
+            int animId;
+            if (scrollDirection == ScrollDirection.DOWN) {
+                animId = R.anim.slide_from_botttom;
+            } else {
+                animId = R.anim.slide_from_top;
+            }
+            Animation animation = AnimationUtils.loadAnimation(viewToAnimaate.getContext(), animId);
+            viewToAnimaate.setAnimation(animation);
+        }
+    }
+
     public interface ItemCLickedListener {
-        void itemClicked(Article article,int position);
+        void itemClicked(Article article, int position);
+    }
+
+    public enum ScrollDirection {
+        TOP, DOWN
     }
 }

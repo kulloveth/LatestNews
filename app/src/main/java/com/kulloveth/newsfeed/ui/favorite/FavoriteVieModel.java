@@ -3,7 +3,6 @@ package com.kulloveth.newsfeed.ui.favorite;
 import android.app.Application;
 import android.os.AsyncTask;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -15,8 +14,6 @@ import com.kulloveth.newsfeed.local.FavoriteEntity;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 

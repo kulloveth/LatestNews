@@ -7,6 +7,12 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
+/**
+ *  a single retrofit instance
+ *  to be used across the app
+ * */
+
 public class RetrofitClient {
     private static Retrofit retrofit = null;
     private static final OkHttpClient client;

@@ -17,14 +17,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabIndicatorColor="@android:color/white"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorHeight="@dimen/two_dp"
         app:tabMode="scrollable"
         app:tabTextColor="@android:color/white" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/zero_dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,15 +12,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.kulloveth.newsfeed.R;
 import com.kulloveth.newsfeed.databinding.FragmentHealthBinding;
 import com.kulloveth.newsfeed.remote.ApiUtil;
 import com.kulloveth.newsfeed.remote.model.Article;
 import com.kulloveth.newsfeed.ui.category.category.CategoryViewModel;
+import com.kulloveth.newsfeed.utils.AppUtils;
+import com.kulloveth.newsfeed.utils.ProgressListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HealthFragment extends Fragment {
+public class HealthFragment extends Fragment implements ProgressListener {
 
     private static final String TAG = HealthFragment.class.getSimpleName();
     CategoryViewModel viewModel;
@@ -48,6 +52,7 @@ public class HealthFragment extends Fragment {
 
         recyclerView = binding.subCategoryRv.subCategoryRv;
         viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        viewModel.setListener(this);
         adapter = new HealthAdapter(requireActivity());
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         recyclerView.setAdapter(adapter);
@@ -61,5 +66,25 @@ public class HealthFragment extends Fragment {
             }
             adapter.submitList(articles);
         });
+    }
+
+    @Override
+    public void shoLoading() {
+        if (AppUtils.isConnected(requireActivity())) {
+            binding.progressbar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showMovies() {
+        binding.progressbar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showNoInternet() {
+        Snackbar.make(requireView(), R.string.no_internet_message, Snackbar.LENGTH_SHORT).show();
     }
 }
