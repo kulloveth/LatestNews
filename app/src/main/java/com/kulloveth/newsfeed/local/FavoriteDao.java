@@ -19,7 +19,7 @@ import io.reactivex.Completable;
 @Dao
 public interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-     void insertFavorite(FavoriteEntity favoriteEntity);
+     Completable insertFavorite(FavoriteEntity favoriteEntity);
 
     @Query("Select * from article_info")
     LiveData<List<FavoriteEntity>> fetchFavorite();

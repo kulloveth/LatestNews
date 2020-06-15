@@ -40,33 +40,21 @@ public class FavoriteVieModel extends AndroidViewModel {
     }
 
     public void insertFavorite(FavoriteEntity favoriteEntity) {
-        new InsertAsyncTask(favoriteDao).execute(favoriteEntity);
+        Completable completable = favoriteDao.insertFavorite(favoriteEntity).subscribeOn(Schedulers.io());
+        disposable.add(completable.subscribe());
     }
 
 
-    public LiveData<List<FavoriteEntity>> fetchFavoriteEntity() {
+    LiveData<List<FavoriteEntity>> fetchFavoriteEntity() {
         return favoriteDao.fetchFavorite();
     }
 
-    public void deleteFavorite(FavoriteEntity favoriteEntity) {
+    void deleteFavorite(FavoriteEntity favoriteEntity) {
       Completable completable = favoriteDao.deleteFavorite(favoriteEntity).subscribeOn(Schedulers.io());
       disposable.add(completable.subscribe());
 
     }
 
-    private class InsertAsyncTask extends AsyncTask<FavoriteEntity, Void, Void> {
-        FavoriteDao favoriteDao;
-
-        public InsertAsyncTask(FavoriteDao favoriteDao) {
-            this.favoriteDao = favoriteDao;
-        }
-
-        @Override
-        protected Void doInBackground(FavoriteEntity... favoriteEntities) {
-            favoriteDao.insertFavorite(favoriteEntities[0]);
-            return null;
-        }
-    }
 
     @Override
     protected void onCleared() {
