@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/navigation_headline"
-        android:name="com.kulloveth.newsfeed.ui.headlines.HeadlineFragment"
+        android:name="com.kulloveth.latestnews.ui.headlines.HeadlineFragment"
         android:label="activity_headline"
         tools:layout="@layout/fragment_headline" />
     <fragment
         android:id="@+id/navigation_categories"
-        android:name="com.kulloveth.newsfeed.ui.category.category.CategoryFragment"
+        android:name="com.kulloveth.latestnews.ui.category.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" />
     <fragment
         android:id="@+id/navigation_favorites"
-        android:name="com.kulloveth.newsfeed.ui.favorite.FavoriteFragment"
+        android:name="com.kulloveth.latestnews.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
 </navigation>
