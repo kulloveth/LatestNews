@@ -4,10 +4,10 @@ apply plugin: 'com.google.gms.google-services'
 android {
     signingConfigs {
         NewsFeed {
-            storeFile file('C:\\Users\\KULLOVETH\\Newsfeed.jks')
-            storePassword 'Kullest20'
+//            storeFile file('C:\\Users\\KULLOVETH\\Newsfeed.jks')
+            storePassword ''
             keyAlias = 'Loveth Nwokike'
-            keyPassword 'Kullest20'
+            keyPassword ''
         }
     }
     compileSdkVersion 29
