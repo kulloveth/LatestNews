@@ -29,6 +29,7 @@ This app provides you with news headlines happening around the world,with option
   </tr>
 </table>
 
+### You can get your API_KEY from [NewsApi.org](http://newsapi.org/)
 # Features
 * MVVM Android Architecture with Room Livedata and ViewModel
 * Bottom Navigation with Jetpack Navigation Component
