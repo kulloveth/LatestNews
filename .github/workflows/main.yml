@@ -36,11 +36,11 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
         run: echo API_KEY = $API_KEY > ./local.properties
       - name: Access KEY_STORE
-          env:
-            storePassword: ${{ secrets.STORE_PASSWORD }}
-            keyAlias: ${{ secrets.KEY_ALIAS }}
-            keyPassword: ${{ secrets.KEYPASSWORD }}
-          run: echo API_KEY = $storePassword $keyAlias $keyPassword > ./keystore.properties
+        env:
+          storePassword: ${{ secrets.STORE_PASSWORD }}
+          keyAlias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEYPASSWORD }}
+        run: echo API_KEY = $storePassword $keyAlias $keyPassword > ./keystore.properties
       - name: Unit tests
         run: bash ./gradlew test --stacktrace
   apk:
