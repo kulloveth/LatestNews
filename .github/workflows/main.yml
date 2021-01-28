@@ -45,7 +45,7 @@ jobs:
         run: bash ./gradlew test --stacktrace
   apk:
     name: Generate APK
-    runs-on: latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
