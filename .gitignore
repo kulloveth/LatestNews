@@ -7,6 +7,6 @@
 /captures
 .externalNativeBuild
 .cxx
-/gradle.properties
 /app/google-services.json
 /keystore.properties
+/Newsfeed.jks

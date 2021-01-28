@@ -1,30 +1,36 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
-def keystorePropertiesFile = rootProject.file("keystore.properties");
+def keystorePropertiesFile = rootProject.file("./keystore.properties")
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+String getApiKey() {
+    def propFile = rootProject.file("./local.properties")
+    def properties = new Properties()
+    properties.load(new FileInputStream(propFile))
+    return properties['API_KEY']
+}
 
 android {
     signingConfigs {
         NewsFeed {
-       storeFile file('/Users/chidi/Newsfeed.jks')
+            storeFile file('./Newsfeed.jks')
             storePassword keystoreProperties['storePassword']
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
         }
     }
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.kulloveth.newsfeed"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        buildConfigField 'String', "API_KEY", API_KEY
+        buildConfigField 'String', "API_KEY", getApiKey()
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

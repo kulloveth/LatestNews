@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kulloveth.latestnews.ui.NewsDetailActivity;
 import com.kulloveth.latestnews.utils.AppUtils;
 import com.kulloveth.latestnews.R;
 import com.kulloveth.latestnews.databinding.HeadlineListItemBinding;
@@ -40,6 +41,9 @@ public class TechnologyAdapter extends ListAdapter<Article, TechnologyAdapter.Te
     public void onBindViewHolder(@NonNull TechnologyViewHolder holder, int position) {
         Article article = getItem(position);
         holder.bind(article);
+        holder.itemView.setOnClickListener(v -> {
+            NewsDetailActivity.start(holder.itemView.getContext(), article.getUrl());
+        });
     }
 
     class TechnologyViewHolder extends RecyclerView.ViewHolder {

@@ -1,6 +1,7 @@
 package com.kulloveth.latestnews.ui.headlines;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,11 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kulloveth.latestnews.utils.AppUtils;
 import com.kulloveth.latestnews.R;
 import com.kulloveth.latestnews.databinding.HeadlineListItemBinding;
 import com.kulloveth.latestnews.remote.model.Article;
+import com.kulloveth.latestnews.ui.NewsDetailActivity;
+import com.kulloveth.latestnews.utils.AppUtils;
 import com.squareup.picasso.Picasso;
 
 public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLineViewHolder> {
@@ -47,6 +49,10 @@ public class HeadlineAdapter extends ListAdapter<Article, HeadlineAdapter.HeadLi
     public void onBindViewHolder(@NonNull HeadLineViewHolder holder, int position) {
         Article article = getItem(position);
         holder.bind(article);
+        Context context = holder.itemView.getContext();
+        holder.itemView.setOnClickListener(v -> {
+            NewsDetailActivity.start(context, article.getUrl());
+        });
     }
 
     class HeadLineViewHolder extends RecyclerView.ViewHolder {
