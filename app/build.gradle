@@ -41,7 +41,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.NewsFeed
             versionNameSuffix = '1.0'
-            applicationIdSuffix = 'news'
         }
     }
 
