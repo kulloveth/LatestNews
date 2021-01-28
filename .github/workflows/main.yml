@@ -53,6 +53,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
+      - name: Access KEY_STORE
+        env:
+          storePassword: ${{ secrets.STORE_PASSWORD }}
+          keyAlias: ${{ secrets.KEY_ALIAS }}
+          keyPassword: ${{ secrets.KEYPASSWORD }}
+        run: echo API_KEY = $storePassword $keyAlias $keyPassword > ./keystore.properties
       - name: Build debug APK
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
